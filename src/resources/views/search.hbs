@@ -1,0 +1,25 @@
+<div class="search-form mt-4">
+  <form method="post" action="/news">
+    <div class="form-group">
+      <label for="keyword">Key word</label>
+      <input type="text" name="q" class="form-control" id="keyword" />
+      <small id="emailHelp" class="form-text text-muted">We'll never share your
+        email with anyone else.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category</label>
+      <select name="category" class="form-control" id="category">
+        <option value="all">All</option>
+        <option value="business">Business</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="general">General</option>
+        <option value="health">Health</option>
+        <option value="science">Science</option>
+        <option value="sports">Sports</option>
+        <option value="technology">Technology</option>
+      </select>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
