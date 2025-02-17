@@ -20,7 +20,7 @@ class CourseController {
 
         try {
             await Course.create(formData)
-            res.redirect('/')
+            res.redirect('/me/stored/courses')
         } catch (error) {
             console.log(error);
 
@@ -51,7 +51,25 @@ class CourseController {
 
     async delete(req, res, next) {
         try {
+            await Course.delete({ _id: req.params.id })
+            res.redirect('back')
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async deleteForce(req, res, next) {
+        try {
             await Course.deleteOne({ _id: req.params.id })
+            res.redirect('back')
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async restore(req, res, next) {
+        try {
+            await Course.restore({ _id: req.params.id })
             res.redirect('back')
         } catch (error) {
             next(error)

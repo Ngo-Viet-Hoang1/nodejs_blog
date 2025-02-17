@@ -1,7 +1,7 @@
 <table class="table mt-4">
-    <div class="">
-        <a href="/me/trash/courses">My trash</a>
-    </div>
+  <div class="">
+    <a href="/me/stored/courses">Courses</a>
+  </div>
 
   <thead>
     <tr>
@@ -20,7 +20,7 @@
         <td>{{this.level}}</td>
         <td>{{this.createdAt}}</td>
         <td>
-          <a href="/courses/{{this._id}}/edit" class="btn btn-link">Edit</a>
+          <a data-id="{{this._id}}" href="#" class="btn btn-link btn-restore">Restore</a>
           <a
             data-id="{{this._id}}"
             class="btn btn-link btn-delete-course"
@@ -78,19 +78,31 @@
 </div>
 
 <form method="post" name="deleteForm"></form>
+<form method="post" name="restoreForm"></form>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        let id
-        let delForm = document.forms['deleteForm']
-        $('#exampleModal').on('show.bs.modal', function (event) {
-            const button = $(event.relatedTarget)
-            id = button.data('id')
-        })
-        var btnDel = $('#btn-delete-course')
-        btnDel.on('click', () => {
-            delForm.action = `/courses/${id}?_method=DELETE`
-            delForm.submit()
-        } )
-    })
+document.addEventListener('DOMContentLoaded', function () {
+    let id;
+    let delForm = document.forms['deleteForm'];
+    let restoreForm = document.forms['restoreForm'];
+    // Xử lý sự kiện mở modal xác nhận xóa
+    $('#exampleModal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        id = button.data('id');
+    });
+
+    // Xử lý xóa khóa học
+    $('#btn-delete-course').on('click', function () {
+        delForm.action = `/courses/${id}/force?_method=DELETE`;
+        delForm.submit();
+    });
+
+    // Xử lý restore bằng cách dùng event delegation
+    $('.btn-restore').on('click', function (e) {
+        e.preventDefault();
+        const courseId = $(this).data('id')
+        delForm.action = `/courses/${courseId}/restore?_method=PATCH`;
+        delForm.submit();
+    });
+});
 </script>
