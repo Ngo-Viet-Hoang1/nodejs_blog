@@ -3,8 +3,12 @@ const Course = require('../models/Course')
 class MeController {
     async storedCourses(req, res, next) {
         try {
-            const courses = await Course.find({}).lean()
-            res.render('me/stored-courses', { courses })
+            const [deletedCourseCount, courses] = await Promise.all([
+                Course.countDocumentsDeleted(),
+                Course.find({}).lean()
+            ])
+
+            res.render('me/stored-courses', { courses, deletedCourseCount })
         } catch (error) {
             next(error)
         }
