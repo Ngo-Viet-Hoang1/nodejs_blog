@@ -17,13 +17,35 @@ class CourseController {
     async store(req, res, next) {
         const formData = req.body
         formData.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`
-        
+
         try {
             await Course.create(formData)
             res.redirect('/')
         } catch (error) {
             console.log(error);
-            
+
+        }
+    }
+
+    async edit(req, res, next) {
+        try {
+            const course = await Course.findById(req.params.id).lean()
+            res.render('courses/edit', { course })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async update(req, res, next) {
+        const formData = req.body
+        formData.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`
+
+        try {
+            await Course.updateOne({ _id: req.params.id }, formData)
+            res.redirect('/')
+        } catch (error) {
+            console.log(error);
+
         }
     }
 }
