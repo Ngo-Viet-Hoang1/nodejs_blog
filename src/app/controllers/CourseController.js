@@ -48,6 +48,15 @@ class CourseController {
 
         }
     }
+
+    async delete(req, res, next) {
+        try {
+            await Course.deleteOne({ _id: req.params.id })
+            res.redirect('back')
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 module.exports = new CourseController()

@@ -16,10 +16,68 @@
         <td>{{this.level}}</td>
         <td>{{this.createdAt}}</td>
         <td>
-            <a href="/courses/{{this._id}}/edit" class="btn btn-link">Edit</a>
-            <a href="" class="btn btn-link">Delete</a>
+          <a href="/courses/{{this._id}}/edit" class="btn btn-link">Edit</a>
+          <a
+            data-id="{{this._id}}"
+            class="btn btn-link btn-delete-course"
+            data-toggle="modal"
+            data-target="#exampleModal"
+          >Delete</a>
         </td>
       </tr>
     {{/each}}
   </tbody>
 </table>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        You really want to delete ?
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-course" type="button" class="btn btn-danger">Delete</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+        >Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form method="post" name="deleteForm"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let id
+        let delForm = document.forms['deleteForm']
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget)
+            id = button.data('id')
+        })
+        var btnDel = $('#btn-delete-course')
+        btnDel.on('click', () => {
+            delForm.action = `/courses/${id}?_method=DELETE`
+            delForm.submit()
+        } )
+    })
+</script>
