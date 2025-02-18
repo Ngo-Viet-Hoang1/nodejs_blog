@@ -75,6 +75,20 @@ class CourseController {
             next(error)
         }
     }
+
+    async handleFormActions(req, res, next) {
+        switch (req.body.action) {
+            case 'delete':
+                try {
+                    await Course.delete({ _id: { $in: req.body.courseIds } })
+                    res.redirect('back')
+                } catch (error) {
+                    next(error)
+                }
+
+                break
+        }
+    }
 }
 
 module.exports = new CourseController()
